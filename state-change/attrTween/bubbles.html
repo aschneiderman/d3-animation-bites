@@ -1,0 +1,12 @@
+
+
+var circlesTransition = d3.selectAll("circle")
+   .transition()
+   .duration(5000)
+   .attr("cy", "0")
+   .attrTween('cx', function (d, i, a) {
+        return function (t) {
+          // Add salt, pepper and constants as per your taste
+          return a + (Math.random() - 0.5) * 10;
+        };
+    });

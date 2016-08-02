@@ -1,0 +1,77 @@
+Next time:
+
+A. Start investigating attrTween - looks like that's what's needed to make it work
+1) Take a look at the Mike Bostock examples such as stroke dash interpolation.
+2) Check out the airplane example, Which has multiple items mooving simultaneously (see code way below)
+3) To get an idea of how I would handle multiple items, see bubbles that HTMML, which is just a snippet of code
+
+B. Also investigate using the timer:
+1) example from Mike Bostock, which I downloaded
+2) this exchange on stack exchange:
+https://stackoverflow.com/questions/20725548/animating-circles-with-d3-js
+
+
+C. Start adding templates/tags
+
+---------------------------------------------------------------------------------------
+
+
+Once we figure out flight routes, all we have to do is to move airplanes along a path. Using d3.js Transition, the animation should be straightforward. Here is the transition code snippet, and the key is attrTween() and path.getPointAtLength().
+
+function transition(plane, route) {
+  var l = route.node().getTotalLength();
+  plane.transition()
+       .duration(5000)
+       .attrTween("transform", delta(route.node()));
+}
+
+function delta(path) {
+  var l = path.getTotalLength();
+  return function(i) {
+    return function(t) {
+      var p = path.getPointAtLength(t * l);
+      return "translate(" + p.x + "," + p.y + ")";
+    }
+  }
+}
+
+...
+
+transition(plane, route);
+
+
+The passed function to attrTween is invoked repeatedly during the duration. Invocation interval is a tween function (easing in/out), so it's ideal for flight animation (flight is slow at taking off and landing). Inner function in the delta function has an argument, t. This value is between 0 and 1, in other words, percentage. By multiplying the total arc length, getPointAtLength(length) will return a coordinate. That's where we move an airplane. transform = translate(x, y) does the move.
+
+
+
+
+---------------------------------------------------------------------------------------
+
+Rotate and Up/Down Plane
+
+The code above enables flight animation, but there is a few problems. First of all, airplane's head is pointing at North all the time. It's moving but does look like flying. The head should point to a moving direction. Secondly, it might be better if we can express takeoff and landing in animation by changing airplane scale. Scaling shows 3D animation in two dimension.
+
+
+Plane rotation can be achieved by finding two points on the path and calculate an angle from North. Here is an example code:
+
+var p = path.getPointAtLength(t * l);
+var t2 = Math.min(t + 0.05, 1);
+var p2 = path.getPointAtLength(t2 * l);
+
+var x = p2.x - p.x;
+var y = p2.y - p.y;
+var r = 90 - Math.atan2(-y, x) * 180 / Math.PI;
+
+return "translate(" + p.x + "," + p.y + ") rotate(" + r + ")";
+
+
+By adding rotate to transform, we make a plane point to a flying direction. For takeoff and landing, you can use any kinds of concave functions that express plane altitude (zoom in/out). I used Sin function with maximum y limit.
+
+...
+var s = Math.min(Math.sin(Math.PI * t) * 0.7, 0.3);
+return "translate(" + p.x + "," + p.y + ") scale(" + s + ") rotate(" + r + ")";
+
+
+Now, you can see a plane rotation as well as takeoff/landing. There are more improvements you can make, such as shadowing, fixing rotation axis..., but I'll leave them to you.
+
+http://www.tnoda.com/blog/2014-04-02
