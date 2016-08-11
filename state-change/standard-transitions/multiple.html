@@ -10,10 +10,16 @@
 
 <script type="text/javascript">
 
+var numStates = 3;
 var members = [
-		{ id: "327", 	state: [2, 3, 1] },
-		{ id: "42", 	state: [2, 2, 2] },
-		{ id: "96",		state: [2, 1, 1]}
+    { id: 1, 	state: [2, 3, 1] },
+    { id: 2, 	state: [2, 2, 2] },
+		{ id: 7, 	state: [2, 3, 1] },
+		{ id: 12, 	state: [2, 2, 2] },
+    { id: 27, 	state: [2, 3, 1] },
+    { id: 42, 	state: [2, 2, 2] },
+		{ id: 57, 	state: [2, 3, 1] },
+		{ id: 96,		state: [2, 1, 1]}
 ];
 
 var	Time = 0;
@@ -22,25 +28,23 @@ d3.select("svg").selectAll("rect")
   .data(members)
   .enter().append("rect")
     .attr("x",0)
-    .attr("y",function(d,i) {return 300 + i*20}  )
+    .attr("y",function(d,i) {return 300 + d.state[1]* 20}  )
     .attr("width",10)
     .attr("height",10)
     .style("fill", "Crimson")
-    .transition()
-      .ease(d3.easeLinear)
-  		.on("start", changeState);
+    ;
+    // .transition()
+    //   .ease(d3.easeLinear)
+  	// 	.on("start", changeState);
 
  function changeState()  {
 	 Time = Time + 1;
-	 console.log(Time);
 	 if (Time < 11) {
-     console.log( d3.active(this));
 	 d3.active(this)
-      //  .attr("x", 320)
      .transition()
 				 	.duration(400)
           .ease(d3.easeLinear)
-          .delay(0)
+          .delay(1)
        .attr("x", 60 + (Time * 80))
 			 .attr("y", 80 + ( 500 - ((Time % 3) *200) ))
      .transition()
