@@ -1,0 +1,3 @@
+This example demonstrates applying [d3-drag](https://github.com/d3/d3-drag) to a [force-directed graph](/mbostock/f584aa36df54c451c94a9d0798caed35) computed using [d3-force](https://github.com/d3/d3-force). When the drag gesture starts, the targeted node is [fixed](https://github.com/d3/d3-force#simulation_fix) to the pointer; it is released when the gesture ends. In addition, the simulation is temporarily “heated” during interaction by setting the [target *alpha*](https://github.com/d3/d3-force#simulation_alphaTarget) to a non-zero value.
+
+Compare to the [SVG version](/mbostock/2675ff61ea5e063ede2b5d63c08020c7).
