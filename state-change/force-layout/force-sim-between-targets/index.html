@@ -1,0 +1,99 @@
+
+
+<!DOCTYPE html>
+<meta charset="utf-8">
+<a target="_blank" style="outline:none;"><canvas width="960" height="480"></canvas></a>
+
+
+
+<script src="https://d3js.org/d3.v4.0.0-alpha.40.min.js"></script>
+<button id="btnNext">Next</button>
+<script>
+
+var canvas = document.querySelector("canvas"),
+    context = canvas.getContext("2d"),
+    width = canvas.width,
+    height = canvas.height,
+    searchRadius = 40;
+
+var timestep = 0,
+    maxTimestep = 10;
+
+var color = d3.scaleCategory10();
+
+var targets = [[0, 0], [200, 0], [400, 0], [600, 0]],
+    coordinates = [[0, 0], [200, 100], [400, 150], [600, -100]];
+
+var yScale = d3.scaleLinear()
+  .domain(coordinates.map(function(d) { return d[0]; }))
+  .range(coordinates.map(function(d) { return d[1]; }));
+
+var nodes = d3.range(100).map(function (index) {
+    return {
+      index: index,
+      type: ~~(Math.random()*5),
+      targetIndices: d3.range(maxTimestep).map(function() {
+        return ~~(Math.random()*targets.length)
+      })
+    }
+  });
+
+nodes.forEach(function (d) {
+  d.color = color(d.type);                     // assign color
+  d.target = targets[d.targetIndices[timestep]]; // inital target
+})
+
+var simulation = d3.forceSimulation(nodes)
+  .force("charge", d3.forceManyBody().strength(-5))
+  .force("x", d3.forceX().x(function(d) { return d.target[0]; }))
+  .force("y", d3.forceY().y(function(d) { return d.target[1]; }))
+  .on("tick", ticked);
+
+function ticked() {
+  context.clearRect(0, 0, width, height);
+  context.save();
+  context.translate(100, height / 2);
+
+  context.beginPath();
+  targets.forEach(drawTarget);
+  context.fillStyle = "#bbb";
+  context.fill();
+  context.strokeStyle = "#bbb";
+  context.stroke();
+
+  nodes.forEach(drawNode);
+
+  context.restore();
+}
+
+function drawNode (d, i) {
+  var velocity = Math.sqrt(d.vx*d.vx + d.vy*d.vy),
+      size = velocity/5 + 2;
+
+  context.beginPath();
+  context.moveTo(d.x, d.y + yScale(d.x));
+  context.arc(d.x, d.y + yScale(d.x), size, 0, 2 * Math.PI);
+  context.fillStyle = d.color;
+  context.fill();
+  context.strokeStyle = d.color;
+  context.stroke();
+}
+
+function drawTarget (d, i) {
+  context.moveTo(d[0], d[1] + yScale(d[0]));
+  context.arc(d[0], d[1] + yScale(d[0]), 10, 0, 2 * Math.PI);
+}
+
+d3.select('#btnNext')
+  .on('click', function(e) {
+    timestep = timestep === (maxTimestep - 1) ? 0 : timestep + 1;
+    console.log("timestep =",timestep);
+
+    nodes.forEach(function (d) {
+      d.target = targets[d.targetIndices[timestep]];
+    })
+
+    simulation.alpha(.8).nodes(nodes).restart();
+  });
+
+</script>
