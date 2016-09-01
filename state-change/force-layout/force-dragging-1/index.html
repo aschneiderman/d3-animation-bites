@@ -1,53 +1,67 @@
 <!DOCTYPE html>
-<meta charset="utf-8">
-<style>
+<head>
+  <meta charset="utf-8">
+  <title>My Experiments</title>
+  <script src="https://d3js.org/d3.v4.min.js"></script>
+  <link href="bites.css" rel="stylesheet" media="screen">
+  <style>
+    .links line {
+      /*stroke: #aaa;*/
+      stroke: green;
+    }
+    .nodes circle {
+      fill: Black;
+      pointer-events: all;
+      stroke: none;
+      stroke-width: 40px;
+    }
+  </style>
+</head>
+<body>
+<p>
+  <!-- Based on Mike Bostock’s Block <a href="https://bl.ocks.org/mbostock/1804919">1804919</a> ← 1747543 -->
+</p>
 
-.links line {
-  stroke: #aaa;
-}
-
-.nodes circle {
-  pointer-events: all;
-  stroke: none;
-  stroke-width: 40px;
-}
-
-</style>
 <svg width="960" height="600"></svg>
-<script src="https://d3js.org/d3.v4.min.js"></script>
 <script>
-
 var svg = d3.select("svg"),
     width = +svg.attr("width"),
     height = +svg.attr("height");
 
+//
 var simulation = d3.forceSimulation()
     .force("link", d3.forceLink().id(function(d) { return d.id; }))
     .force("charge", d3.forceManyBody())
     .force("center", d3.forceCenter(width / 2, height / 2));
 
+
+// Read in the JSON file, saving the data in the variable graph
 d3.json("miserables.json", function(error, graph) {
   if (error) throw error;
 
+  // Create the nodes
+  var node = svg.append("g")          // Create a group To hold the whole diagram
+      .attr("class", "nodes")           // and set the class for the whole diagram to "nodes"
+    .selectAll("circle")              // Add a circle to each nodes
+    .data(graph.nodes)
+    .enter().append("circle")
+      .attr("r", 4.5)
+      .call(d3.drag()                 // Let's make the diagram draggable!  Tell each node what function to call when you:
+          .on("start", dragstarted)     //  click on a node
+          .on("drag", dragged)          //  drag the node
+          .on("end", dragended));       //  are finished dragging
+
+  // Add the title to be displayed if your mouse hovers over a node
+  node.append("title")
+      .text(function(d) { return d.id; });
+
+  // Create the lines that connect the nodes
   var link = svg.append("g")
-      .attr("class", "links")
+    .attr("class", "links")
     .selectAll("line")
     .data(graph.links)
     .enter().append("line");
 
-  var node = svg.append("g")
-      .attr("class", "nodes")
-    .selectAll("circle")
-    .data(graph.nodes)
-    .enter().append("circle")
-      .attr("r", 2.5)
-      .call(d3.drag()
-          .on("start", dragstarted)
-          .on("drag", dragged)
-          .on("end", dragended));
-
-  node.append("title")
-      .text(function(d) { return d.id; });
 
   simulation
       .nodes(graph.nodes)
@@ -69,6 +83,9 @@ d3.json("miserables.json", function(error, graph) {
   }
 });
 
+
+// Let's make the diagram draggable!
+// To do that, we need to create three functions
 function dragstarted(d) {
   if (!d3.event.active) simulation.alphaTarget(0.3).restart();
   d.fx = d.x;
@@ -87,3 +104,5 @@ function dragended(d) {
 }
 
 </script>
+</body>
+</html>

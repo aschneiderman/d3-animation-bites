@@ -1,39 +1,42 @@
 <!DOCTYPE html>
-<meta charset="utf-8">
+<head>
+  <meta charset="utf-8">
+  <title>My Experiments</title>
+<script src="http://d3js.org/d3.v3.min.js"></script>
+    <link href="bites.css" rel="stylesheet" media="screen">
 <style>
-
 circle {
   stroke: #fff;
 }
-
 </style>
+</head>
 <body>
-
 <p>
-
   Based on Mike Bostock’s Block <a href="https://bl.ocks.org/mbostock/1804919">1804919</a> ← 1747543
 </p>
-<script src="http://d3js.org/d3.v3.min.js"></script>
-<script>
 
+<script>
 var width = 960,
     height = 500,
     padding = 6, // separation between nodes
     maxRadius = 12;
 
-var n = 200, // total number of nodes
-    m = 10; // number of distinct clusters
+var numNodes = 200, // total number of nodes          (Was n)
+    numClusters = 10; // number of distinct clusters  (Was m)
 
+// Create a function that will return a unique color for every cluster
 var color = d3.scale.category10()
-    .domain(d3.range(m));
+    .domain(d3.range(numClusters));
 
+// Creates a function
+// still not clear on what it does
 var x = d3.scale.ordinal()
-    .domain(d3.range(m))
+    .domain(d3.range(numClusters))
     .rangePoints([0, width], 1);
 
-var nodes = d3.range(n).map(function() {
-  var i = Math.floor(Math.random() * m),
-      v = (i + 1) / m * -Math.log(Math.random());
+var nodes = d3.range(numNodes).map(function() {
+  var i = Math.floor(Math.random() * numClusters),
+      v = (i + 1) / numClusters * -Math.log(Math.random());
   return {
     radius: Math.sqrt(v) * maxRadius,
     color: color(i),
@@ -106,3 +109,5 @@ function collide(alpha) {
 }
 
 </script>
+</body>
+</html>
