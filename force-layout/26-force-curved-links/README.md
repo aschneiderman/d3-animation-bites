@@ -1,0 +1,1 @@
+This variation of a [force-directed graph](/4062045) uses intermediate nodes in links to create aesthetically-pleasing Bézier curves.

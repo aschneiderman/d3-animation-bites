@@ -1,18 +1,4 @@
-Next time:
-
-======================================================================================================
-WHAT I HAVE LEARNED:
-if I am trying to iterate through several transitions, the normal D3 commands won't work
-because I don't know how to get back to the data
-
-SO:
-- try it using timer
-
-- show it off and ask, is there a better way using transitions?
-- and how well does it scale to lots more dots?
-
-=======================================================================================================
-
+BEYOND FORCE LAYOUTS:  THINGS TO RESEARCH
 
 
 A. Start investigating attrTween - looks like that's what's needed to make it work

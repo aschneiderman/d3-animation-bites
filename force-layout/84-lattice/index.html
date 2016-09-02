@@ -2,26 +2,30 @@
 <meta charset="utf-8">
 <canvas width="960" height="960"></canvas>
 <script src="https://d3js.org/d3.v4.min.js"></script>
+
+<p>Based on Mike Bostock's <a href="http://bl.ocks.org/mbostock/1b64ec067fcfc51e7471d944f51f1611">1b64ec067fcfc51e7471d944f51f1611</a> </p>
 <script>
 
-var nodes = d3.range(1000).map(function(i) {
+var n = 20;
+
+var nodes = d3.range(n * n).map(function(i) {
   return {
     index: i
   };
 });
 
-var links = d3.range(nodes.length - 1).map(function(i) {
-  return {
-    source: Math.floor(Math.sqrt(i)),
-    target: i + 1
-  };
-});
+var links = [];
+
+for (var y = 0; y < n; ++y) {
+  for (var x = 0; x < n; ++x) {
+    if (y > 0) links.push({source: (y - 1) * n + x, target: y * n + x});
+    if (x > 0) links.push({source: y * n + (x - 1), target: y * n + x});
+  }
+}
 
 var simulation = d3.forceSimulation(nodes)
-    .force("charge", d3.forceManyBody())
-    .force("link", d3.forceLink(links).distance(20).strength(1))
-    .force("x", d3.forceX())
-    .force("y", d3.forceY())
+    .force("charge", d3.forceManyBody().strength(-30))
+    .force("link", d3.forceLink(links).strength(1).distance(20).iterations(10))
     .on("tick", ticked);
 
 var canvas = document.querySelector("canvas"),

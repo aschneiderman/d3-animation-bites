@@ -1,0 +1,1 @@
+This demonstrates [*forceLink*.iterations](https://github.com/d3/d3-force#link_iterations), which strengthens [d3-force](https://github.com/d3/d3-force)’s link constraint by applying the constraint multiple times per simulation step.
