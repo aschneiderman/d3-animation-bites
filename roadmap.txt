@@ -1,0 +1,7 @@
+
+
+
+
+2017:
+D3 snacks: move to Wordpress, spend afternoons getting this down
+Schedule: a little work on voice commands for gists
