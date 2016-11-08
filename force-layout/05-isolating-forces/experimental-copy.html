@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<p>Copy of Mike Bostock's  <a href="http://bl.ocks.org/mbostock/b1f0ee970299756bc12d60aedf53c13b">b1f0ee970299756bc12d60aedf53c13b</a></p>
+<canvas width="960" height="500"></canvas>
+<script src="https://d3js.org/d3.v4.min.js"></script>
+<script>
+
+var n = 20;
+
+var nodes = d3.range(n * n).map(function(i) {
+  return {
+    index: i,
+    color: i < 200 ? "red" : "steelblue"
+  };
+});
+
+var canvas = document.querySelector("canvas"),
+    context = canvas.getContext("2d"),
+    width = canvas.width,
+    height = canvas.height;
+
+var dotDistance = -10; //the more negative the number, the more spread out the dots are
+var groupDistance = 6;
+var simulation = d3.forceSimulation(nodes)
+    .force("y", d3.forceY())    //what does this do?
+    .force("red", isolate(d3.forceX(-width / groupDistance), function(d) { return d.color === "red"; }))
+    .force("steelblue", isolate(d3.forceX(width / groupDistance), function(d) { return d.color === "steelblue"; }))
+    .force("charge", d3.forceManyBody().strength(dotDistance))
+    .on("tick", ticked);
+
+function ticked() {
+  // context.clearRect(0, 0, width, height); //clearRect erases previous dots, giving the illusion of movement.
+  context.save();
+  context.translate(width / 2, height / 2); //halving the width and height puts them in the middle of the screen
+  nodes.forEach(drawNode);
+  context.restore(); //what does this do?
+}
+
+function drawNode(d) {
+  context.beginPath();
+  context.moveTo(d.x + 3, d.y);
+  context.arc(d.x, d.y, 3, 0, 2 * Math.PI);
+  context.fillStyle = d.color;
+  context.fill();
+}
+
+function isolate(force, filter) {
+  var initialize = force.initialize;
+  force.initialize = function() { initialize.call(force, nodes.filter(filter)); };
+  return force;
+}
+
+</script>
