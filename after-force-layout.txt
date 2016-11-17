@@ -1,18 +1,9 @@
 BEYOND FORCE LAYOUTS:  THINGS TO RESEARCH
 
 
-A. Start investigating attrTween - looks like that's what's needed to make it work
-1) Take a look at the Mike Bostock examples such as stroke dash interpolation.
+
 2) Check out the airplane example, Which has multiple items mooving simultaneously (see code way below)
-3) To get an idea of how I would handle multiple items, see bubbles that HTMML, which is just a snippet of code
 
-B. Also investigate using the timer:
-1) example from Mike Bostock, which I downloaded
-2) this exchange on stack exchange:
-https://stackoverflow.com/questions/20725548/animating-circles-with-d3-js
-
-
-C. Start adding templates/tags
 
 ---------------------------------------------------------------------------------------
 
