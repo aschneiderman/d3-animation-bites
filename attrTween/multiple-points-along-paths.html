@@ -7,7 +7,7 @@
   path {
     fill: none;
     stroke: #000;
-    stroke-width: 3px;
+    stroke-width: 0px;
   }
   circle {
     fill: green;
@@ -26,15 +26,20 @@ mostly tweaked to make it easier for beginners to understand.</p>
 
 <script type="text/javascript">
 // Set the parameters
-var timeToTravelPath =10000;
+var timeToTravelPath =3500;
+
 var pathPoints = [
-  [480, 200],
-  [580, 400],
-  [680, 100],
-  [780, 300],
-  [180, 300],
-  [280, 100],
-  [380, 400]
+  // [480, 200],
+  // [580, 400],
+  // [680, 100],
+  // [780, 300],
+  // [180, 300],
+  // [280, 100],
+  // [380, 400]
+     [80, 200],
+     [400, 400],
+     [600, 200],
+     [800, 400]
 ];
 
 var svg = d3.select("svg");
@@ -43,32 +48,55 @@ var svg = d3.select("svg");
 var path = svg.append("path")
     .data([pathPoints])
     .attr("d", d3.svg.line()
-    .tension(0)   // Need to research what this does
-    .interpolate("cardinal-closed"));
+    .tension(0)   // Controls how curvy the line is. 0 = all curve; 1 = no curve.
+    .interpolate("monotone"));
 
 // Draw a circle at each point on pathPoints
 // NOTE:The space between each circle and the path is created by using a 3 pixel "stroke" of white (see CSS above)
-svg.selectAll(".point")
-    .data(pathPoints)
-  .enter().append("circle")
-    .attr("r", 4)
-    .attr("transform", function(d) { return "translate(" + d + ")"; });
+// svg.selectAll(".point")
+//     .data(pathPoints)
+//   .enter().append("circle")
+//     .attr("r", 4)
+//     .attr("transform", function(d) { return "translate(" + d + ")"; });
 
 // Create the circle that's going to travel around the path
 var travelingCircle = svg.append("circle")
     .attr("r", 13)
-    .attr("transform", "translate(" + pathPoints[0] + ")");   // Starts the circle at the first point
-
-transition();
-
-
-function transition() {
-  travelingCircle
+    .attr("transform", "translate(" + pathPoints[0] + ")")   // Starts the circle at the first point
     .transition()
+      .ease("linear")
       .duration(timeToTravelPath)
-      .attrTween("transform", translateAlong(path.node()))    // Yeah, this is weird
-      .each("end", transition);
-}
+      .attrTween("transform", translateAlong(path.node()));
+
+var travelingCircle = svg.append("circle")
+    .attr("r", 13)
+    .attr("transform", "translate(" + pathPoints[0] + ")")   // Starts the circle at the first point
+    .transition()
+      .delay(250)
+      .ease("linear")
+      .duration(timeToTravelPath)
+      .attrTween("transform", translateAlong(path.node()));
+
+var travelingCircle = svg.append("circle")
+    .attr("r", 13)
+    .attr("transform", "translate(" + pathPoints[0] + ")")   // Starts the circle at the first point
+    .transition()
+    .delay(500)
+      .ease("linear")
+      .duration(timeToTravelPath)
+      .attrTween("transform", translateAlong(path.node()));
+
+// transition();
+
+
+// function transition() {
+//   travelingCircle
+    // .transition()
+    //   .ease("linear")
+    //   .duration(timeToTravelPath)
+    //   .attrTween("transform", translateAlong(path.node()))    // Yeah, this is weird
+      // .each("end", transition);
+// }
 
 
 // Returns the commands for creating the specified path
@@ -78,7 +106,7 @@ function translateAlong(path) {
   return function(d, i, a) {
     return function(t) {
       var p = path.getPointAtLength(t * pathLength);
-      // console.log(p.x, p.y);
+      //  console.log(t, p.x, p.y, "translate(" + p.x + "," + p.y + ")");
       return "translate(" + p.x + "," + p.y + ")";
     };
   };
