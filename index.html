@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <head>
   <meta charset="utf-8">
-  <title>My Experiments</title>
+  <title>D3 Animation Bites: Experiments in D3 Animation</title>
     <link href="bites.css" rel="stylesheet" media="screen">
 </head>
 <style>
@@ -11,56 +11,40 @@ body {
 </style>
 <body>
 <img src="http://ce.unm.edu/assets/imgs/enrich/cooking-header" alt="" height="200" />
-<h1>Animation Experiments</h1>
-
-<p>Given how complex Force Layout is, I'm mostly going to focus on custom tweening
-<br/>(NOTE: find CSS command to put a limited width box around the page, so text wraps)<br/> (NOTE: might want to switch my CSS to taste.CSS)
-</p>
-
-<h2>Custom Tweening</h2>
-<p> Experiments</p>
-<ul>
-  <li><a href="attrTween/multiple-points-along-paths.html">Multiple</a> points along a path</li>
-  <li> <a href="attrTween/points-along-path-V4.html">v4 Custom Tweening</a> Version: need to learn how to change it transitions work in V4</li>
-</ul>
-<p> Documentation</p>
-<ul>
-  <li> V3 Base example: <a href="attrTween/points-along-path.html">Point along a Path</a></li>
-  <li>V4 D3 documentation on  <a href="https://github.com/d3/d3-interpolate">interpolate</a>,
-   <a href="https://github.com/d3/d3-shape#curves">curves</a> (a.k.a. lines)</li>
-  <li>V3 tutorial: creating  <a href="https://www.dashingd3js.com/svg-paths-and-d3js">SVG paths</a> in D3</li>
-  <li> V3 example: animating <a href="https://bl.ocks.org/mbostock/5649592">creating a path</a> (a.k.a. Stroke Dash Interpolation)</li>
-</ul>
-
+<h1>D3 Animation Bites</h1>
+<p> Our experiments with D3 animation, plus useful D3 animation links.</p>
 
 <h2>Force Layout</h2>
 <p> Experiments</p>
 <ul>
-  <li>V4: <a href="force-layout/05-isolating-forces/index.html">Isolating Forces</a> </li>
-  <li>V4: <a href="force-layout/05-isolating-forces/experimental-copy.html">Freaky</a> experiment</li>
-</ul>
-<p> Documentation and Examples</p>
-<ul>
-  <li>Official D3 <a href="https://github.com/d3/d3-force">documentation</a> for force layouts</li>
-  <li>V4 tutorial:  Vallandingham's great article on <a href="http://vallandingham.me/bubble_charts_with_d3v4.html">Force Layout</a></li>
-  <li>Another article on <a href="https://blog.pusher.com/whats-new-in-d3-v4/"> Version 4  changes</a></li>
-  <li> <a href="force-layout/force-layout-v3tov4.html">My notes</a> on Force Layout changes from v3 to v4</li>
-  <li>  <a href="force-layout/index.html">Examples</a> I downloaded, which are powerful but hard to make sense of</li>
+  <li><a href="force-layout/05-isolating-forces/index.html">Isolating Forces</a> (cleaned up version of <a href="http://bl.ocks.org/mbostock/b1f0ee970299756bc12d60aedf53c13b">Mike Bostock's</a>) </li>
+  <li>Isolating Forces: particles that leave a <a href="force-layout/05-isolating-forces/particle-trails.html">trail</a> </li>
+  <li> <a href="force-layout/10-multiple-targets/index.html">Particles After Multiple Targets</a>: should annotate &amp; clean  up</li>
 </ul>
 
-<h2>Timer</h2>
-<p> I probably won't do much with the timer -- it looks like Custom Tweening covers the same turf<br/> as far as the things we want to do go. But just in case...</p>
+<p> Documentation and Examples</p>
 <ul>
-  <li> <a href="timer/many_circles/index.html">Many Circles</a>, courtesy of Mike Bostock</li>
+  <li> Our copy of Jeff Walker's V4 example, which has a button to  <a href="https://aschneiderman.github.io/d3-animation-bites/force-layout/10-multiple-targets/index.html">restart a simulation</a></li>
+  <li>V4 tutorial:  Vallandingham's great article on <a href="http://vallandingham.me/bubble_charts_with_d3v4.html">Force Layout</a></li>
+<li>Eric Socolofsky's <a href="https://hi.stamen.com/forcing-functions-inside-d3-v4-forces-and-layout-transitions-f3e89ee02d12#.ks5gt1a37">Inside D3 V4 Forces and Layout Transitions</a></li>
+<li> How to use  <a href="http://www.visualcinnamon.com/2015/11/learnings-from-a-d3-js-addict-on-starting-with-canvas.html"> Canvas</a> with force layout</li>
+  <li>Another article on <a href="https://blog.pusher.com/whats-new-in-d3-v4/"> Version 4  changes</a></li>
+  <li> <a href="force-layout/force-layout-v3tov4.html">My notes</a> on Force Layout changes from v3 to v4</li>
+  <li>Official D3 <a href="https://github.com/d3/d3-force">documentation</a> for force layouts</li>
+  <li>Example to clean up: <a href="60-cocktail-tralfamadore/cocktail.html">Cocktails at Tralfadamore</a> (in my repo)</li>
+  <li> Other  <a href="force-layout/index.html">examples</a> I downloaded</li>
 </ul>
 
 <h2>Tiles</h2>
 <p>Experiments (not set up yet)</p>
 
 <ul>
-  <li>Animated <a href="tiles/food-consumption-flowing-data/food_consumption.html">Food Consumption Over Time</a></li>
+  <li>Animated <a href="tiles/food-consumption-flowing-data/food_consumption.html">Food Consumption Over Time</a> (doesn't work yet, but has link to original site)</li>
    <li>Chris Evans' Tile Grid: not set up yet (<a href="http://www.columbia.edu/~cme2126/datavisuals/bigdata_tilegrid.html">original site</a>)</li>
  </ul>
+
+<h2>Custom Tweening and Timer</h2>
+<p> Now stored on a  <a href="tweening-and-timer.html">separate page</a>.</p>
 
 <h2>Other Useful Links</h2>
 <ul>
@@ -69,6 +53,19 @@ body {
   <li><a href="https://github.com/d3/d3/blob/master/CHANGES.md">Mike Bostock's</a> explaination of v3 vs v4</li>
   <li><a href="https://github.com/aschneiderman/d3-animation-bites/">Github page</a> for this repo</li>
 </ul>
+
+<h2>Other Useful Notes</h2>
+<ul>
+  <li> Inside D3 example: shows how to use a  <a href="https://bl.ocks.org/d3indepth/16c3036242d93526f3e18c60266b154e">button</a></li>
+  <li> The .CSV command now has a method for getting a list of the columns: &lt;datafileobject&gt;.columns</li>
+</ul>
+
+
+<h2>To Do List</h2>
+<ul>
+  <li> Find CSS command to put a limited width box around the page, so text wraps<br/> (might want to switch my CSS to taste.CSS)</li>
+</ul>
+
 
 </body>
 </html>
