@@ -2,6 +2,9 @@
 <meta charset="utf-8">
 <p>Copy of Mike Bostock's  <a href="http://bl.ocks.org/mbostock/b1f0ee970299756bc12d60aedf53c13b">b1f0ee970299756bc12d60aedf53c13b</a></p>
 
+<!-- <button id="btnOnce">Run it Once</button>
+<button id="btnMultiple">Run it For Multiple Years</button> -->
+<p id="year"></p>
 <canvas width="960" height="500"></canvas>
 <script src="https://d3js.org/d3.v4.min.js"></script>
 <script>
@@ -20,12 +23,17 @@ var canvas = document.querySelector("canvas"),
     width = canvas.width,
     height = canvas.height;
 
+var Year = 2010;
+d3.select("p").text(Year.toString());
+
 var simulation = d3.forceSimulation(nodes)
     .force("y", d3.forceY())
     .force("brown", isolate(d3.forceX(-width / 6), function(d) { return d.color === "brown"; }))
     .force("steelblue", isolate(d3.forceX(width / 6), function(d) { return d.color === "steelblue"; }))
     .force("charge", d3.forceManyBody().strength(-10))
-    .on("tick", ticked);
+    .on("tick", ticked)
+    .on("end", restartSimulation);
+
 
 function ticked() {
   context.clearRect(0, 0, width, height);
@@ -48,5 +56,37 @@ function isolate(force, filter) {
   force.initialize = function() { initialize.call(force, nodes.filter(filter)); };
   return force;
 }
+
+var Year = 2010;
+d3.select('#btnOnce')
+  .on('click', function(e) {
+    Year = Year + 1;
+    restartSimulation();
+  });
+
+  d3.select('#btnMultiple')
+    .on('click', function(e) {
+
+      var years = d3.range(2010, 2016);
+      years.forEach(restartSimulation);
+    });
+
+
+function restartSimulation()  {
+
+  if (Year < 2015) {
+    Year = Year + 1;
+    console.log("Year:", Year);
+    d3.select("p").text(Year.toString());
+
+    var split = Math.random();
+    nodes.forEach(function (d) {
+      d.color =  Math.random()  < split ? "brown" : "steelblue"
+    })
+    simulation.alpha(0.8); // <---- reheat;
+    simulation.nodes(nodes);
+    simulation.restart();
+} else { console.log(Year.toString() & ": " & "Finished!")};
+};
 
 </script>
