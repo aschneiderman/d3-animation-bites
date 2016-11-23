@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<head>
+  <meta charset="utf-8">
+  <title>D3 Animation Bites: Experiments in D3 Animation</title>
+    <link href="../../bites.css" rel="stylesheet" media="screen">
+</head>
+<body>
+<p>Copy of Mike Bostock's  <a href="http://bl.ocks.org/mbostock/b1f0ee970299756bc12d60aedf53c13b">Isolating Forces</a> block</p>
+
+<p id="year"></p>
+<p id="tick"></p>
+<canvas width="960" height="700"></canvas>
+<script src="https://d3js.org/d3.v4.min.js"></script>
+<script>
+
+
+
+var n = 20;
+
+var nodes = d3.range(n * n).map(function(i) {
+  return {
+    index: i,
+    color: i < 200 ? "brown" : "steelblue"
+  };
+});
+
+var canvas = document.querySelector("canvas"),
+    context = canvas.getContext("2d"),
+    width = canvas.width,
+    height = canvas.height;
+
+var Tick = 0;
+var Year = 2010;
+
+d3.select("#year").text("Year: "  + Year.toString());
+
+var simulation = d3.forceSimulation(nodes)
+    .force("y", d3.forceY())
+    .force("brown", isolate(d3.forceX(-width / 6), function(d) { return d.color === "brown"; }))
+    .force("steelblue", isolate(d3.forceX(width / 6), function(d) { return d.color === "steelblue"; }))
+    .force("charge", d3.forceManyBody().strength(-10))    // The more negative the strength, the more space between Nodes
+
+    // Let's try some experiments to see if we can get the simulation not to take so long
+    // .alphaDecay(0.05)
+    .alphaMin(0.2)
+    // .velocityDecay(0.2)
+    .on("tick", ticked)
+    .on("end", restartSimulation);
+
+
+function ticked() {
+  Tick = Tick + 1;
+  d3.select("#tick").text("Tick: " + Tick.toString());
+  //  if (Tick % 3 == 1) {
+      context.clearRect(0, 0, width, height);
+  // };
+  context.save();
+  context.translate(width / 2, height / 2);
+  nodes.forEach(drawNodeCircle);
+  context.restore();
+}
+
+function drawNodeCircle(d) {
+  // Draw a circle on the canvas for this node
+  // NOTE: Candace doesn't have a specific command to create a circle, so we do it indirectly by creating an arc
+  context.beginPath();
+  r = 6;
+  context.moveTo(d.x + 3, d.y);
+  context.arc(d.x, d.y, 6, 0, r * Math.PI);
+  context.fillStyle = d.color;
+  context.fill();
+}
+
+function isolate(force, filter) {
+  var initialize = force.initialize;
+  force.initialize = function() { initialize.call(force, nodes.filter(filter)); };
+  return force;
+}
+
+
+
+function restartSimulation()  {
+
+  if (Year < 2015) {
+    Year = Year + 1;
+    Tick = 0;
+    d3.select("#year").text("Year: " + Year.toString());
+
+    var split = Math.random();
+    nodes.forEach(function (d) {
+      d.color =  Math.random()  < split ? "brown" : "steelblue"
+    })
+    simulation.alpha(0.8); // <---- reheat;
+    simulation.nodes(nodes);
+    simulation.restart();
+} else { console.log(Year.toString() & ": " & "Finished!")};
+};
+
+// <!-- <button id="btnOnce">Run it Once</button>
+// <button id="btnMultiple">Run it For Multiple Years</button> -->
+//
+// d3.select('#btnOnce')
+//   .on('click', function(e) {
+//     Year = Year + 1;
+//     restartSimulation();
+//   });
+//
+//   d3.select('#btnMultiple')
+//     .on('click', function(e) {
+//
+//       var years = d3.range(2010, 2016);
+//       years.forEach(restartSimulation);
+//     });
+
+
+
+</script>
