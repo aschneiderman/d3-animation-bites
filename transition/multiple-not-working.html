@@ -28,7 +28,9 @@ d3.select("svg").selectAll("rect")
   .data(members)
   .enter().append("rect")
     .attr("x",0)
-    .attr("y",function(d,i) {return 300 + d.state[1]* 20}  )
+    .attr("y",function(d,i) {
+      // console.log(i, d.state[1], 300 + d.state[1]* 20);
+        return 300 + d.state[1]* 20}  )
     .attr("width",10)
     .attr("height",10)
     .style("fill", "Crimson")

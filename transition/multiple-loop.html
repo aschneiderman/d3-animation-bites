@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<head>
+  <meta charset="utf-8">
+  <title>D3 Animation Bites: Experiments in D3 Animation</title>
+  <link href="../bites.css" rel="stylesheet" media="screen">
+  <script src="https://d3js.org/d3.v4.min.js"></script>
+</head>
+<body>
+<h1>Multiple Items: State Change Using A Standard Transition And Delay</h1>
+<p> Now with some tacky special-effects thrown in!</p>
+<svg width="1200" height="600"></svg>        <!-- SVG graphics will go here  -->
+
+<script type="text/javascript">
+
+var numStates = 3;
+var members = [
+    { id: 1, 	  state: [1, 3, 2, 1], count: 0 },
+    { id: 2, 	  state: [2, 2, 3, 2], count: 0 },
+		// { id: 7, 	  state: [3, 1, 1], count: 0 },
+		// { id: 12, 	state: [2, 2, 2], count: 0 },
+    // { id: 27, 	state: [2, 3, 1], count: 0 },
+    // { id: 42, 	state: [2, 2, 2], count: 0 },
+		// { id: 57, 	state: [2, 3, 1], count: 0 },
+		{ id: 96,		state: [3, 1, 1, 3], count: 0}
+];
+
+var times = [1,2, 3];    // Yeah, icky hard coding; will clean this up when we move to using live data
+
+states = d3.select("svg").selectAll("rect")
+  .data(members)
+  .enter().append("rect")
+    .attr("x",0)
+    .attr("y",function(d,i) {
+        return 200 + d.state[0]* 100}  )
+    .attr("width", 3)
+    .attr("height", 15)
+    .style("fill", "Crimson")
+    ;
+
+
+times.forEach(function(d,i) {
+  nextState(states, d);
+});
+
+function nextState(data, time)  {
+  console.log(time, time*800);
+  data
+  .transition()
+     .duration(800)
+     .delay((time -1) * 810)
+     .ease(d3.easeLinear)
+  .style("fill", function(d,i) { return time % 2 == 1 ? "black" : "Crimson"})
+  .attr("x", 60 + (time * 300))
+  .attr("y", function(d,i) { return 200 + d.state[time]* 100}  )
+  ;
+};
+
+
+
+</script>
+
+
+</body>
+</html>
