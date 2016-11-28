@@ -15,76 +15,77 @@ body {
 <p> Our experiments with D3 animation, plus useful D3 animation links.</p>
 
 <h2>Force Layout</h2>
-<p> Isolating Forces: Tracking Changes over Years using Canvas (<a href="force-layout/10-isolating-forces/index.html">Original Version</a>)</p>
+<p>  Changes over Years using Canvas (loosely based on <a href="force-layout/10-isolating-forces/index.html">Mike Bostock's ex</a>)</p>
 <ul>
   <li><a href="force-layout/10-isolating-forces/test.html">Basic Version</a>  </li>
   <li>  <a href="force-layout/10-isolating-forces/test-less-delay.html">Shorter Delay</a> between Years</li>
   <li> <a href="force-layout/10-isolating-forces/test-opt-outs.html">Gradual Increase In Change Group</a>, E.g., optouts over time</li>
   <li>Silly Experiment: particles that leave a <a href="force-layout/10-isolating-forces/particle-trails.html">trail</a> </li>
+  <li>Amazing <a href="force-layout/60-cocktail-tralfamadore/cocktail.html">Cocktails at Tralfadamore</a></li>
 </ul>
 <p> Force Layout using SVG</p>
 <ul>
-  <li>Vallandingham's Animated SVG-based <a href="force-layout/30-animated-bubble-chart/index.html">Bubble Chart</a>.<br/>
-    To run it locally, start server.bat in the same folder (requires Python) <br/>and then use the  <a href="http://localhost:8888/index.html">local bubble chart version</a>
- (<a href="http://localhost:8888/test.html">experimental version</a>)
- <br/> NOTE: code is located On GitHub for  <a href="https://github.com/aschneiderman/d3-animation-bites/blob/gh-pages/force-layout/30-animated-bubble-chart/src/bubble_chart.js"> original</a>
- and  <a href="https://github.com/aschneiderman/d3-animation-bites/blob/gh-pages/force-layout/30-animated-bubble-chart/src_test/bubble_chart.js">test</a> </li>
- <li><a href="force-layout/60-cocktail-tralfamadore/cocktail.html">Cocktails at Tralfadamore</a></li>
+  <li> <a href="force-layout/20-beeswarm/index.html">Bee Swarm</a>: add animation over time </li>
+  <li>Vallandingham's   <a href="force-layout/30-animated-bubble-chart/index.html">Bubble Chart</a>
+    <ul><li>    NOTE: to run it locally, start server.bat in the same folder  <br/>and then use   <a href="http://localhost:8888/index.html">this local link</a></li>
+      <li>Local server (<a href="http://localhost:8888/test.html">experimental version</a></li>
+<li>The same code on <a href="https://github.com/aschneiderman/d3-animation-bites/blob/gh-pages/force-layout/30-animated-bubble-chart/src/bubble_chart.js"> GitHub</a></li>
+<li>GitHub  <a href="https://github.com/aschneiderman/d3-animation-bites/blob/gh-pages/force-layout/30-animated-bubble-chart/src_test/bubble_chart.js">test</a> version</li>
 </ul>
-<p> Documentation and Examples</p>
-<ul>
-  <li> Our copy of Jeff Walker's V4 example has a button to  <a href="https://aschneiderman.github.io/d3-animation-bites/force-layout/10-multiple-targets/index.html">restart a simulation</a></li>
-  <li>V4 tutorial:  Vallandingham's great article on <a href="http://vallandingham.me/bubble_charts_with_d3v4.html">Force Layout</a></li>
-<li>Eric Socolofsky's <a href="https://hi.stamen.com/forcing-functions-inside-d3-v4-forces-and-layout-transitions-f3e89ee02d12#.ks5gt1a37">Inside D3 V4 Forces and Layout Transitions</a></li>
-<li> How to use  <a href="http://www.visualcinnamon.com/2015/11/learnings-from-a-d3-js-addict-on-starting-with-canvas.html"> Canvas</a> with force layout</li>
-  <li>Another article on <a href="https://blog.pusher.com/whats-new-in-d3-v4/"> Version 4  changes</a></li>
-  <li> <a href="force-layout/force-layout-v3tov4.html">My notes</a> on Force Layout changes from v3 to v4</li>
-  <li>Official D3 <a href="https://github.com/d3/d3-force">documentation</a> for force layouts</li>
-</ul>
-<p> Might Also Want to Look at</p>
-<ul>
-  <li> <a href="force-layout/800-multiple-targets/index.html">Particles After Multiple Targets</a>: should annotate &amp; clean  up</li>
-  <li> Other  <a href="force-layout/index.html">examples</a> I downloaded</li>
+</li>
 </ul>
 
 <h2>Transitions</h2>
 <ul>
   <li>Transitions through multiple states using  <a href="transition/multiple-loop.html">delays</a></li>
-  <li> Up Next: clustering objects into "bins": at each state, filtering objects into separate lists, <br/>
-    then assigning each object to a specific slot in its bin using some simple math (i.e., % for Y, Math.floor() for X)</li>
+  </ul>
+<p> Up Next</p>
+<ul>
+  <li>Clustering objects into "bins": for each state, filter the objects into separate lists, <br/>
+    then assign each object to a specific slot in its bin using some simple math:
+    <pre>
+  Assuming i is index:
+  d.x = groupX[d.group] +  (i % numRows) * rowSpacing
+  d.y = groupY[d.group] + Math.floor(i / numColumns) * columnSpacing
+</pre>
+</li>
+  <li>Using new V4 approach to chained transitions:  <a href="http://bl.ocks.org/mbostock/70d5541b547cc222aa02">Mike B's Ex</a><br/>
+    Then make the "on end" call a function where if you're at the last year, you call a blank function<br/>
+    Then make the on end  be  a one line if then where if you're done, you call a blank function.<br/>
+    Then all you need is d.count for each bound Object (because the repeating chain is happening on each object, not the whole set of objects) </li>
 </ul>
 
 <h2>Tiles</h2>
-<p>Experiments (not set up yet)</p>
-
 <ul>
-  <li>Animated <a href="tiles/food-consumption-flowing-data/food_consumption.html">Food Consumption Over Time</a> (doesn't work yet, but has link to original site)</li>
+  <li>Animated <a href="tiles/food-consumption-flowing-data/food_consumption.html">Food Consumption Over Time</a></li>
    <li>Chris Evans' Tile Grid: not set up yet (<a href="http://www.columbia.edu/~cme2126/datavisuals/bigdata_tilegrid.html">original site</a>)</li>
  </ul>
 
 <h2>Custom Tweening and Timer</h2>
 <p> Now stored on a  <a href="tweening-and-timer.html">separate page</a>.</p>
 
-<h2>Other Useful Links</h2>
+<h2>Other Useful Links: Examples, Tricks, Tutorials, and Documentation</h2>
 <ul>
-  <li> D3 Snacks' list of great  <a href="http://datachefs.github.io/d3-snacks/examples.html">D3 examples</a></li>
-  <li><a href="http://d3indepth.com/">D3 in Depth</a>: Book in Progress, covering V4 of D3</li>
-  <li> Great slides on  <a href="https://iros.github.io/d3-v4-whats-new/#1">What's New with v4</a></li>
-  <li><a href="https://github.com/d3/d3/blob/master/CHANGES.md">Mike Bostock's</a> explaination of v3 vs v4</li>
-  <li><a href="https://github.com/aschneiderman/d3-animation-bites/">Github page</a> for this repo</li>
-</ul>
-
-<h2>Other Useful Notes</h2>
-<ul>
+  <li>  <a href="http://datachefs.github.io/d3-snacks/">D3 Snacks</a>' list of great  <a href="http://datachefs.github.io/d3-snacks/examples.html">D3 examples</a></li>
+  <li> Animation examples I <a href="force-layout/index.html">downloaded</a> but didn't use above</li>
   <li> Inside D3 example: shows how to use a  <a href="https://bl.ocks.org/d3indepth/16c3036242d93526f3e18c60266b154e">button</a></li>
+  <li> How to create a  <a href="https://github.com/d3/d3-array/blob/master/README.md#range">range of numbers</a>, E.g., a list of years</li>
   <li> The .CSV command now has a method for getting a list of the columns: &lt;datafileobject&gt;.columns</li>
+  <li><a href="http://d3indepth.com/">D3 in Depth</a>: Book in Progress, covering V4 of D3</li>
+  <li><a href="https://github.com/d3/d3/blob/master/CHANGES.md">Mike Bostock's</a> explaination of v3 vs v4</li>
+  <li> Great slides on  <a href="https://iros.github.io/d3-v4-whats-new/#1">What's New with v4</a></li>
+  <li>Another article on <a href="https://blog.pusher.com/whats-new-in-d3-v4/"> Version 4  changes</a></li>
+  <li>D3 Animation Bites <a href="https://github.com/aschneiderman/d3-animation-bites/">Github page</a> </li>
 </ul>
-
-
-<h2>To Do List</h2>
+<p> Force Layout Documentation and Examples</p>
 <ul>
-  <li> Find CSS command to put a limited width box around the page, so text wraps<br/> (might want to switch my CSS to taste.CSS)</li>
+  <li>Official D3 <a href="https://github.com/d3/d3-force">documentation</a> for force layouts</li>
+  <li> How to use  <a href="http://www.visualcinnamon.com/2015/11/learnings-from-a-d3-js-addict-on-starting-with-canvas.html"> Canvas</a> </li>
+  <li>V4 tutorial:  Vallandingham's great article on <a href="http://vallandingham.me/bubble_charts_with_d3v4.html">Force Layout</a></li>
+  <li>Eric Socolofsky's <a href="https://hi.stamen.com/forcing-functions-inside-d3-v4-forces-and-layout-transitions-f3e89ee02d12#.ks5gt1a37">Inside D3 V4 Forces and Layout Transitions</a></li>
+  <li> <a href="force-layout/force-layout-v3tov4.html">My notes</a> on Force Layout changes from v3 to v4</li>
 </ul>
+
 
 
 </body>
