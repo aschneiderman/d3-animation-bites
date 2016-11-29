@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<head>
+  <meta charset="utf-8">
+  <title>D3 Animation Bites: Experiments in D3 Animation</title>
+    <link href="../../bites.css" rel="stylesheet" media="screen">
+    <script src="https://d3js.org/d3.v4.min.js"></script>
+</head>
+<body>
+  <h1>Change over Years</h1>
+<p>Proof of concept -- using randomly created data -- of animating change over time. Based off of Mike Bostock's  <a href="http://bl.ocks.org/mbostock/b1f0ee970299756bc12d60aedf53c13b">Isolating Forces</a> block</p>
+
+<h2 id="year"></h2>
+<p id="tick"></p>
+<canvas width="960" height="700"></canvas>        <!-- Uses canvas instead of SVG, I assume because it's faster -->
+<script>
+
+var canvas = document.querySelector("canvas"),
+context = canvas.getContext("2d"),
+width = canvas.width,
+height = canvas.height;
+
+// Colors for the two groups/states
+var MainGroupColor = "brown", ChangedGroupColor = "steelblue";
+
+// 1st and last year of the animation
+var FirstYear = 2010, LastYear = 2015;
+
+// Create some random data to play with
+var numNodes = 400;
+var nodes = d3.range(numNodes).map(function(i) {
+  return {
+    index: i,
+    xPlace: 300 - Math.random() * 600,
+    color: i < numNodes/2 ? MainGroupColor : ChangedGroupColor // At the beginning, half will be in each group
+  };
+});
+
+var Tick = 0;   // Used so we can display which simulation "tick" we are in
+
+// Set the first year and display it
+var Year = FirstYear;
+d3.select("#year").text("Year: "  + Year.toString());
+
+
+// Create the simulation!  This is the guts of the code.
+// We are going to set up the simulation and then run it once for each year.
+// To create a simulation, first you call forceSimulation with a list of your data:
+var simulation = d3.forceSimulation(nodes)
+
+    // Then you create a series of forces that'll act on the simulation -- kind of like gravity does in a simple physics simulation
+
+    // Centers/clusters all the nodes on the same place on the Y axis
+    // .force("y", d3.forceY())
+    .force("y", d3.forceY(function(d,i) { return d.xPlace; }).strength(1))
+
+    // Create 2 forces to cluster nodes on the X axis, each of which will only act on nodes of the same color
+    // Tbis is how we end up with 2 clusters
+    .force(MainGroupColor, isolateNodes(d3.forceX(-width / 6), function(d) { return d.color === MainGroupColor; }))
+    .force(ChangedGroupColor, isolateNodes(d3.forceX(width / 6), function(d) { return d.color === ChangedGroupColor; }))
+
+    // Makes sure the nodes don't end up in the same space; the more negative the strength, the more space between Nodes
+    .force("charge", d3.forceManyBody().strength(-2))
+
+    // Let's try some experiments to see if we can get the simulation not to take so long
+    .alphaMin(0.2)    // This seems to do the trick; need to better understand how it works
+    // .alphaDecay(0.05)
+    // .velocityDecay(0.2)
+
+    // Every time the simulation "ticks" aka moves its internal clock ahead one unit, call the ticked funtion below
+    .on("tick", ticked)
+
+    // Normally a simulation only runs once.  The easiest way to get it to run multitple times is to tell it that
+    // when the current simulation ends, call the restartSimulation function below
+    .on("end", updateAndRerunSimulation);
+
+
+
+function isolateNodes(force, filter) {
+  // isolateNode: this function somehow makes the magic of connecting each force just to the nodes that have its color.
+  // I don't understand how it works.  I know that nodes.filter(filter) filters the nodes to just the ones we want,
+  // but how exactly it's doing it is a mystery to me
+
+  var initialize = force.initialize;
+  force.initialize = function() { initialize.call(force, nodes.filter(filter)); };
+  return force;
+}
+
+
+function ticked() {
+  // ticked: each time the simulation moves ahead one time unit, it calls this function
+  // to change the screen to reflect the changes that happened in the simulation
+
+  Tick = Tick + 1;                                      // Don't really need this; we're just using it
+  d3.select("#tick").text("Tick: " + Tick.toString());  // so we can display which tick the simulation is on
+
+  context.clearRect(0, 0, width, height);   // Clear the screen ( see what happens if you comment out this line)
+  context.save();
+  context.translate(width / 2, height / 2);
+  nodes.forEach(drawNodeCircle);            // Takes every node and redraws it using drawNodeCircle below
+  context.restore();
+}
+
+
+function drawNodeCircle(d) {
+  // drawNodeCircle: draws a circle on the canvas for this node at the node's new location.
+  // This is a bit confusing:  each time the simulation "ticks", it updates the data
+  // with the new location that each node should now be at, but the simulation doesn't
+  // directly update the screen; it uses this function to actually update the screen.
+  // NOTE:  unlike SVG, canvases don't have a command for creating circles, so we do it indirectly by drawing an arc
+
+  context.beginPath();
+  context.moveTo(d.x + 3, d.y);
+  context.arc(d.x, d.y, 3, 0, 2 * Math.PI);
+  context.fillStyle = d.color;
+  context.fill();
+}
+
+
+function updateAndRerunSimulation()  {
+  // updateAndRerunSimulation: this is how we are able to run one simulation per year
+  // When the current simulation finishes, it calls this function.  If we aren't on the last year,
+  // it changes to the next year, updates the data so it contains the new year's data,
+  // then restarts the simulation.  If we're on the last year, nothing happens; we're done.
+
+  if (Year < LastYear) {
+    Year = Year + 1;
+    Tick = 0;
+    d3.select("#year").text("Year: " + Year.toString());
+
+    // Since we don't have real data, each year we randomly change the data
+    var split = Math.random();  // Determines the size of the main group (random produces a decimal between 0 and 1)
+    nodes.forEach(function (d) {
+      d.color =  Math.random()  < split ? MainGroupColor : ChangedGroupColor // Randomly assign a new color to the node
+    })
+
+    // Now restart the simulation
+    simulation.alpha(0.8);        // The simulation won't rerun unless you add some "heat"
+    simulation.nodes(nodes);      // Update the simulation's data so it's using the updated nodes
+    simulation.restart();         // restart the sucker!
+
+  }; // end if
+};
+
+</script>
+</body>
+</html>
