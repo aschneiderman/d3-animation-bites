@@ -26,7 +26,7 @@ var MainGroupColor = "brown", ChangedGroupColor = "steelblue";
 var FirstYear = 2010, LastYear = 2015;
 
 // Create some random data to play with
-var numNodes = 200;
+var numNodes = 100;
 var nodes = d3.range(numNodes).map(function(i) {
   return {
     index: i,
@@ -55,7 +55,7 @@ var simulation = d3.forceSimulation(nodes)
     // Centers/clusters all the nodes on the same place on the Y axis
     // .force("y", d3.forceY())
     .force("y", d3.forceY(function(d,i) {
-            return   d.color === MainGroupColor  ? d.xPlace : d.xPlace - 200; }).strength(1))
+            return   d.color === MainGroupColor  ? d.xPlace - 300: d.xPlace  ; }).strength(1))
 
     // Create 2 forces to cluster nodes on the X axis, each of which will only act on nodes of the same color
     // Tbis is how we end up with 2 clusters
@@ -69,8 +69,8 @@ var simulation = d3.forceSimulation(nodes)
 
     // Let's try some experiments to see if we can get the simulation not to take so long
     .alphaMin(0.3)    // This seems to do the trick; need to better understand how it works
-    // .alphaDecay(0.05)
-    // .velocityDecay(0.2)
+    // .alphaDecay(0.005)
+    // .velocityDecay(0.3)
 
     // Every time the simulation "ticks" aka moves its internal clock ahead one unit, call the ticked funtion below
     .on("tick", ticked)

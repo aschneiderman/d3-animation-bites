@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<style>
+
+circle {
+  fill: #000;
+  stroke: #000;
+  stroke-width: 1.5px;
+}
+
+</style>
+<p> From Mike Bostock's  <a href="https://bl.ocks.org/mbostock/1125997">1125997</a></p>
+<svg width="960" height="500"></svg>
+<script src="https://d3js.org/d3.v4.min.js"></script>
+<script>
+
+var svg = d3.select("svg"),
+    margin = {top: 40, right: 40, bottom: 40, left: 40},
+    width = svg.attr("width") - margin.left - margin.right,
+    height = svg.attr("height") - margin.top - margin.bottom,
+    g = svg.append("g").attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+var y = d3.scalePoint()
+    .domain(d3.range(50))
+    .range([0, height]);
+
+var z = d3.scaleLinear()
+    .domain([10, 0])
+    .range(["hsl(62,100%,90%)", "hsl(228,30%,20%)"])
+    .interpolate(d3.interpolateHcl);
+var Count = 0;
+
+g.selectAll("circle")
+  .data(y.domain())
+  .enter().append("circle")
+    .attr("r", 25)
+    .attr("cx", 0)
+    .attr("cy", y)
+    .attr("myCount", 0)
+    .style("fill", function(d) { return z(Math.abs(d % 20 - 10)); })
+  .transition()
+    .duration(2500)
+    .delay(function(d) { return d * 40; })
+    .on("start", function repeat() {
+      Kitty = d3.select(this);
+      old = +Kitty.attr("myCount");
+      Kitty.attr("myCount", old + 1);
+      Count = Count + 1;
+      console.log("count is", Count, d3.select(this).attr("cy"), Kitty.attr("myCount"));
+      // console.log(Count,  d3.select(this).attr("cy"));
+      if (+Kitty.attr("myCount") >  2) { return true;};
+        d3.active(this)
+            .attr("cx", width)
+          .transition()
+            .attr("cx", 0)
+          .transition()
+            .on("start", repeat);
+      });
+
+</script>
