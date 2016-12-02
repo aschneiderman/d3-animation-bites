@@ -10,20 +10,18 @@
     stroke-width: 0px;
   }
   circle {
-    fill: green;
-    stroke: white;
-    stroke-width: 3px;
+    fill: orange;
   }
 </style>
 </head>
 <body>
-<h1>Chained Transitions: Point-Along-Path Using attrTween</h1>
-
+<h1>Custom Tweening:  Opt Outs Along a Path</h1>
+<p> The trick to make this work: create an ending transition</p>
 <svg width="960" height="500"></svg>        <!-- SVG graphics will go here  -->
 
 <script type="text/javascript">
 // Set the parameters
-var timeToTravelPath = 3000;
+var timeToTravelPath = 3500;
 var pathPoints = [
   [80, 200],
   [400, 400],
@@ -40,7 +38,7 @@ var path = svg.append("path")
     .curve(d3.curveCatmullRom.alpha(0.5))
     );
 
- [0,1,2].forEach(function (d) {
+ [0,1,2,3,4].forEach(function (d) {
   // Create the circle that's going to travel around the path
   svg.append("circle")
     .attr("r", 13)
@@ -49,12 +47,13 @@ var path = svg.append("path")
       .duration(timeToTravelPath)
       .delay(d * 250)
       .ease(d3.easeLinear)
+      .style("fill", "red")
       .attrTween("transform", translateAlong(path.node()))
       .transition()
-        .duration(300)
-        .ease(d3.easeLinear)
-        .attr("r", 20)
-      ;
+        .duration(600)
+        .attr("cx",  20 + (4-d)*30)
+        .style("fill", "purple")
+        ;
     });
 
 
