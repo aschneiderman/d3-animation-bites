@@ -17,27 +17,31 @@ body {
 <h2>Force Layout</h2>
 <p>  Changes over Years using Canvas (loosely based on <a href="force-layout/10-isolating-forces/index.html">Mike Bostock's ex</a>)</p>
 <ul>
-  <li><a href="force-layout/10-isolating-forces/test.html">Basic Version</a>  </li>
-  <li>  <a href="force-layout/10-isolating-forces/test-less-delay.html">Shorter Delay</a> between Years</li>
-  <li> <a href="force-layout/10-isolating-forces/test-opt-outs.html">Gradual Increase In Change Group</a>, E.g., optouts over time</li>
-  <li> <a href="force-layout/10-isolating-forces/test-elongated.html">Elongated</a> version (<a href="force-layout/10-isolating-forces/test-elongated2.html">version 2</a>)</li>
+  <li><a href="force-layout/10-isolating-forces/test.html">Basic Version</a>, plus a  technique to have <a href="force-layout/10-isolating-forces/test-less-delay.html">shorter delay</a> between years</li>
+  <li> Gradual Increase In Change Group:  <a href="force-layout/10-isolating-forces/test-opt-outs.html"> Optouts over Time</a> </li>
+  <li> <a href="force-layout/10-isolating-forces/test-elongated.html">Elongated</a> version (limits of this technique: <a href="force-layout/10-isolating-forces/test-elongated2.html">version 2</a>)</li>
   <li>Silly Experiment: particles that leave a <a href="force-layout/10-isolating-forces/particle-trails.html">trail</a> </li>
   <li>Amazing <a href="force-layout/60-cocktail-tralfamadore/cocktail.html">Cocktails at Tralfadamore</a></li>
 </ul>
 <p> Force Layout using SVG</p>
 <ul>
-  <li> <a href="force-layout/20-beeswarm/index.html">Bee Swarm</a>: add animation over time </li>
+  <li> Static layout: <a href="force-layout/20-beeswarm/index.html">Bee Swarm</a></li>
   <li>Vallandingham's   <a href="force-layout/30-animated-bubble-chart/index.html">Bubble Chart</a></li>
 </ul>
 
 <h2>Transitions</h2>
 <ul>
   <li>Transitions through multiple states using  <a href="transition/transition-delay.html">delays</a></li>
-  <li>Transitions through multiple states using  <a href="transition/transition-chained.html">chained transitions</a> and clustering objects into "bins"</li>
+  <li>A better strategy: using  <a href="transition/transition-chained.html">chained transitions</a> </li>
+</ul>
 
-  </ul>
+  <h2>Custom Tweening</h2>
+  <ul>
+    <li><a href="attrTween/multiple-points-along-paths.html">Multiple</a> points along a path </li>
+    <li>Version where <a href="attrTween/opt-outs-along-paths.html">points are packed together at the end</a>   </li>
+</ul>
 
-<p> Up Next</p>
+<h2> Up Next: Combining Transitions and Custom Tweening </h2>
 <ul>
   <li>Clustering objects into "bins": for each state, filter the objects into separate lists, <br/>
     then assign each object to a specific slot in its bin using some simple math:
@@ -53,27 +57,15 @@ body {
     Then all you need is d.count for each bound Object (because the repeating chain is happening on each object, not the whole set of objects) </li>
 </ul>
 
+
+
 <h2>Tiles</h2>
 <ul>
   <li>Animated <a href="tiles/food-consumption-flowing-data/food_consumption.html">Food Consumption Over Time</a></li>
    <li>Chris Evans' Tile Grid: not set up yet (<a href="http://www.columbia.edu/~cme2126/datavisuals/bigdata_tilegrid.html">original site</a>)</li>
  </ul>
 
-<h2>Custom Tweening</h2>
-<ul>
-  <li><a href="attrTween/multiple-points-along-paths.html">Multiple</a> points along a path </li>
-  <li><a href="attrTween/opt-outs-along-paths.html">Sad, little optouts</a>  along a path </li>
-  <!-- <li> <a href="attrTween/points-along-path-V4.html">v4 Custom Tweening</a> Version</li> -->
 
-</ul>
-<p> Documentation</p>
-<ul>
-  <li> V3 Base example: <a href="attrTween/points-along-path.html">Point along a Path</a></li>
-  <li>V4 D3 documentation on  <a href="https://github.com/d3/d3-interpolate">interpolate</a>,
-   <a href="https://github.com/d3/d3-shape#curves">curves</a> (a.k.a. lines)</li>
-  <li>V3 tutorial: creating  <a href="https://www.dashingd3js.com/svg-paths-and-d3js">SVG paths</a> in D3</li>
-  <li> V3 example: animating <a href="https://bl.ocks.org/mbostock/5649592">creating a path</a> (a.k.a. Stroke Dash Interpolation)</li>
-</ul>
 
 
 <h2>Timer</h2>
